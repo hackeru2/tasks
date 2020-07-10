@@ -36,3 +36,51 @@
     transform: rotate(360deg);
   }
 }
+.center-image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+   
+   
+}
+
+.col-avatar {
+  max-width:56px
+}
+.col-avatar img:hover {
+  cursor: pointer;
+}
+.col-avatar > img:hover {
+
+  border-radius: 50%;
+}
+.col-avatar > img:active {
+  width: 21px;
+  border: 2px solid;
+  border-color: rgb(93, 104, 104);
+}
+.right-table-title {
+  display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 7px;
+}
+.rtl {
+  direction: rtl;
+}
+.nav-link:hover   , .nav-item.active > .nav-link {
+  font-weight: 400;
+  text-decoration: underline;
+  color: #28a745 !important;
+}
+.nav-link:active {
+  font-weight: 600;
+}
+.c-pointer {
+  cursor: pointer;
+}
+.tr-right > td > span {
+  float: right;
+}
