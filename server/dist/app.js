@@ -18,6 +18,9 @@ if (!dev) {
     app.use(compression());
     app.use(morgan('common'));
     app.use(express_1.default.static(path.resolve(__dirname, 'build')));
+    app.get("/", (req, res, next) => {
+        res.sendfile(path.resolve(__dirname, 'build', 'index.html'));
+    });
 }
 else
     app.use(morgan('dev'));
@@ -26,7 +29,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 var db = require("../database.js");
 // const router: Router = express.Router();
-app.get("/", (req, res, next) => {
+app.get("/all", (req, res, next) => {
     // console.log('add(5,5)', add(5, 5))
     var sql = "select * from task";
     var params = [];
