@@ -20,7 +20,7 @@ class TaskShow extends Component {
     onCreateTask = async () => {
         try {
             let payload = this.props.forb;
-            let { data: forb } = await axios.post("http://loc alhost:5000/api/task/create", payload);
+            let { data: forb } = await axios.post("http://localhost:5000/api/task/create", payload);
             console.log(forb);
             this.onBack()
             this.props.success("משימה חדשה נוספה בהצלחה")
