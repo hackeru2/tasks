@@ -12,8 +12,8 @@ class Table extends Component {
         await this.props.getAllTasks();
 
         // this.setState(Forbs)
-        let { data: ForbsFirst } = await axios.get("http://localhost:5000/1");
-        console.log('ForbsFirst', ForbsFirst)
+        // let { data: ForbsFirst } = await axios.get("http://localhost:5000/1");
+        // console.log('ForbsFirst', ForbsFirst)
         // let { data: ForbsUpdate } = await axios.put("http://localhost:5000/1/update");
         // console.log('ForbsUpdate', ForbsUpdate)
         let { data: ForbsDelete } = await axios.delete("http://localhost:5000/1/delete");
@@ -39,15 +39,15 @@ class Table extends Component {
                         <td>
                             <div className="row" style={{ 'fontSize': '10px' }}  >
                                 <div className="column col-avatar  ">
-                                    <img src={watchB} alt="Snow" onClick={!index ? () => { } : () => this.onShow(index)} className="center-image" />
+                                    <img src={watchB} alt="Snow" onClick={!index ? () => { } : () => this.onShow(forb.id)} className="center-image" />
                                     <p className="text-center">צפייה</p>
                                 </div>
                                 <div className="column col-avatar">
-                                    <img src={editB} alt="עריכה" onClick={!index ? () => { } : () => this.onEdit(index)} className="center-image" />
+                                    <img src={editB} alt="עריכה" onClick={!index ? () => { } : () => this.onEdit(forb.id)} className="center-image" />
                                     <p className="text-center">עריכה</p>
                                 </div>
                                 <div className="column col-avatar ">
-                                    <img src={deleteB} onClick={!index ? () => { } : () => this.onDelete(index)} className="center-image" alt="Mountains" />
+                                    <img src={deleteB} onClick={!index ? () => { } : () => this.onDelete(forb.id)} className="center-image" alt="Mountains" />
                                     <p className="text-center">מחיקה</p>
                                 </div>
                             </div>

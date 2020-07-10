@@ -1,8 +1,29 @@
 
 import express, { Application, NextFunction, Request, Response } from 'express';
 var cors = require('cors')
+// const { createServer } = require('http')
+const compression = require('compression')
+const morgan = require('morgan')
+const path = require('path')
 
+const normalizePort: any = (port: any) => parseInt(port, 10)
+const PORT = normalizePort(process.env.port)
 const app: Application = express();
+const dev = app.get('env') !== 'production'
+
+if (!dev) {
+    app.disable('x-powered-by')
+    app.use(compression())
+    app.use(morgan('common'))
+
+    app.use(express.static(path.resolve(__dirname, 'build')))
+
+    app.get("/", (req: Request, res: Response, next: NextFunction) => {
+
+        res.sendfile(path.resolve(__dirname, 'build', 'index.html'))
+    })
+}
+else app.use(morgan('dev'))
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -14,7 +35,7 @@ var db = require("../database.js")
 
 
 
-app.get("/", (req: Request, res: Response, next: NextFunction) => {
+app.get("/all", (req: Request, res: Response, next: NextFunction) => {
     // console.log('add(5,5)', add(5, 5))
     var sql = "select * from task"
     var params: Array<any> = []
@@ -37,6 +58,46 @@ app.post("/:index/create", (req: Request, res: Response, next: NextFunction) => 
     res.send("create")
 
 });
+app.post("/api/task/create", (req, res, next) => {
+    var errors = []
+    // if (!req.body.password){
+    //     errors.push("No password specified");
+    // }
+    // if (!req.body.email){
+    //     errors.push("No email specified");
+    // }
+    // if (errors.length){
+    //     res.status(400).json({"error":errors.join(",")});
+    //     return;
+    // }
+    var data = {
+        content: req.body.name,
+        date: req.body.date,
+        username: req.body.username,
+        tel: req.body.tel,
+        email: req.body.email,
+        // password : md5(req.body.password)
+    }
+    var sql = 'INSERT INTO task (content , date , username , tel , email ) VALUES (?,?,?,?,?)'
+    var params = [
+        data.content,
+        data.date,
+        data.username,
+        data.tel,
+        data.email
+    ]
+    db.run(sql, params, function (err: any, result: any) {
+        if (err) {
+            res.status(400).json({ "error": err.message })
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": data,
+            "id": this.lastID
+        })
+    });
+})
 
 // app.put("/api/task/:index/update", (req: Request, res: Response, next: NextFunction) => {
 //     // let index = Number(req.params.index);
@@ -110,7 +171,7 @@ app.get("/:index", (req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-app.listen(5000, () => console.log('ServerRunning'))
+app.listen(PORT || 5000, () => console.log('ServerRunning'))
 
 
 

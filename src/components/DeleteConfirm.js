@@ -8,14 +8,16 @@ const { confirm } = Modal;
 
 const DeleteConfirm = props => {
 
-    const showConfirm = () => {
+    const showConfirm = async () => {
+        // const id = props.forb.id
         confirm({
             title: "האם אתה בטוח שברצונך למחוק פריט זה?",
             icon: <ExclamationCircleOutlined />,
             content: 'Some descriptions',
             onOk() {
                 console.log('OK');
-                props.deleteConfirm()
+
+                props.deleteConfirm(props.delete)
             },
             onCancel() {
                 console.log('Cancel');

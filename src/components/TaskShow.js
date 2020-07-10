@@ -3,20 +3,30 @@ import React, { Component } from 'react';
 class TaskShow extends Component {
 
     onBack = i => this.props.setTask(false)
-    onUpdateTask = async () => {
+    onUpdateorCreateTask = async () => {
 
         if (!this.props.forb.id) return this.onCreateTask()
         let payload = this.props.forb;
-        let { data: forb } = await axios.put(`http://localhost:5000/api/task/${payload.id}/update`, payload);
-        console.log(forb);
-        this.onBack()
+        try {
+            let { data: forb } = await axios.put(`http://localhost:5000/api/task/${payload.id}/update`, payload);
+            console.log(forb);
+            this.props.success("משימה חדשה  עודכנה בהצלחה")
+            this.onBack()
+        } catch (error) {
+            this.props.error(" משימה   לא עודכנה כראוי")
+        }
     }
 
     onCreateTask = async () => {
-        let payload = this.props.forb;
-        let { data: forb } = await axios.post("http://localhost:5000/api/task", payload);
-        console.log(forb);
-        this.onBack()
+        try {
+            let payload = this.props.forb;
+            let { data: forb } = await axios.post("http://loc alhost:5000/api/task/create", payload);
+            console.log(forb);
+            this.onBack()
+            this.props.success("משימה חדשה נוספה בהצלחה")
+        } catch (error) {
+            this.props.error("משימה חדשה לא נוספה כראוי")
+        }
     }
     async componentDidMount() {
 
@@ -86,7 +96,7 @@ class TaskShow extends Component {
                         <div className="float-right">
                             <span className="right-table-title">{cardTitle}</span>
                         </div>
-                        <a href="#" className="btn btn-success float-left mr-2" onClick={this.onUpdateTask}>{createTxtBtn}</a>
+                        <a href="#" className="btn btn-success float-left mr-2" onClick={this.onUpdateorCreateTask}>{createTxtBtn}</a>
                         <a href="#" className="btn btn-outline-success float-left mr-2" onClick={this.onBack}>אחורה</a>
 
                     </div>

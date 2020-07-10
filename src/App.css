@@ -84,3 +84,13 @@
 .tr-right > td > span {
   float: right;
 }
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #ecfff1;
+}
+
+
+
+
+
+  
+

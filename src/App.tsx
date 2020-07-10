@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,17 +14,31 @@ class App extends Component {
 
   getAllTasks = async () => {
     this.setState({ delete: false })
-    let { data: Forbs } = await axios.get("http://localhost:5000");
+    let { data: Forbs } = await axios.get("http://localhost:5000/all");
     this.setState({ Forbs })
     return Forbs;
   }
-  deleteConfirm = async () => {
-    let id: number = this.state.forb.id;
-    let { data: ForbsDelete } = await axios.delete(`http://localhost:5000/${id}/delete`);
-    console.log('ForbsDelete', ForbsDelete)
-    this.getAllTasks()
-    this.setState({ edit: false })
-    this.setState({ delete: false })
+  info = (msg: String) => {
+    message.info(msg);
+  };
+  success = (msg: String) => {
+    message.success(msg);
+  };
+  error = (msg: String) => {
+    message.error(msg);
+  };
+  deleteConfirm = async (id: number) => {
+    try {
+      let { data: ForbsDelete } = await axios.delete(`http://localhost:5000/${id}/delete`);
+      this.info('רשימה נמחקה')
+      console.log('ForbsDelete', ForbsDelete)
+      this.getAllTasks()
+      this.setState({ edit: false })
+      this.setState({ delete: false })
+    } catch (error) {
+      console.error(error)
+      this.error('מחיקה לא בוצעה כראוי')
+    }
   }
   setTaskEdit = (i: any) => {
     this.setState({ TaskComponent: i })
@@ -58,12 +73,15 @@ class App extends Component {
     let deleteConfirmModal = <DeleteConfirm
       deleteConfirm={this.deleteConfirm}
       delete={this.state.delete}
+      forb={this.state.forb}
       setTaskDelete={this.setTaskDelete} />
 
     if (!this.state.delete) deleteConfirmModal = <span></span>;
 
     const mainWindow = this.state.TaskComponent !== false ?
       <TaskShow setTask={this.setTask}
+        error={this.error}
+        success={this.success}
         setForb={this.setForb}
         forb={this.state.forb}
         onChange={this.onChange}
